@@ -37,7 +37,7 @@ Reproduction faithfulness on test vs author scores: ΔAUC < 0.003, ΔC-index = 0
 |---|---|---|---|
 | `sybil/sybil_predictions.json` | Test | JSON | Author-calibrated predictions; `cancer_risk` is the 6-year array. Exposed in `four_way_comp_df.csv` as `sv1c_risk_*`. |
 | `sybil/sybil_predictions_raw.json` | Test | JSON | Raw (pre-calibration) predictions. Exposed as `sv1r_risk_*`. |
-| `predictions_sybil_v1_dev.json` | Dev | JSON, 6,694 records | Author-calibrated dev predictions; used by `decile_stratification_devfit.py` to expose v1.0 calibrator behaviour. Symlink to `predictions_dev.json`. |
+| `predictions_sybil_v1_dev.json` | Dev | JSON, 6,694 records | Author-calibrated dev predictions; used by `decile_stratification_devfit.py` to expose v1.0 calibrator behaviour. |
 
 Note: the calibrator collapses to 228 unique values on the dev fold. Decile D6 and D10 are empty on test.
 
