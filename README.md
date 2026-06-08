@@ -2,7 +2,7 @@
 
 Code and intermediate data accompanying:
 
-> *Bridging the Gap to Clinical Impact: Evaluating Deep Learning for Lung Cancer Screening at Real-World Operating Points.* (Authors withheld for blind review.)
+> *Aligning Evaluation to Deployment: Measuring the Clinical Utility of End-to-End Deep Learning for Lung Cancer Screening.*
 
 This release contains everything needed to reproduce the paper's tables and figures from the NLST four-way-matched test cohort (6,223 scans, 2,199 patients, 295 cancers).
 
@@ -30,8 +30,8 @@ Dependencies: `pandas numpy scipy scikit-learn matplotlib lifelines pyyaml`. Dev
 
 We compare four lung-cancer-risk models on the same patients and the same horizons:
 
-- **LungEvaty** (citation withheld for blind review)
-- **Pillar-0** — the Sybil-1.5 architecture, evaluated here through our 3-seed reproduction
+- **LungEvaty** - author realeased weights from [here](https://maulikchevli.github.io/lungevaty/) 
+- **Pillar-0** — author released weights from [here](https://huggingface.co/YalaLab/Pillar0-Sybil-1.5)
 - **Sybil v1.0** — the original author-released calibrated model
 - **PLCOm2012** (Tammemägi 2013) — the clinical-logistic baseline
 
@@ -114,17 +114,5 @@ The following hold throughout the pipeline:
 
 - **Horizon mode.** IPCW (Uno-style weights, KM-estimated censoring distribution) at years 1 and 3; complete-case at year 6, since NLST `time_at_event` caps at 5.
 - **Bootstrap.** Patient-clustered. n = 1,000 for discrimination, calibration, and per-decile incidence; n = 500 for net benefit. Differences across models are reported on paired resamples (shared indices).
-- **Decile cuts.** Frozen on the NLST dev fold per model and applied to test. The five-category aggregation we report is C1 = D1, C2 = D2, C3 = D3 + D4, C4 = D5 + D6 + D7, C5 = D8 + D9 + D10.
 - **Lung-RADS anchors.** Flag rates of 4.11% (Cat ≥ 4B workup volume), 7.62% (Cat ≥ 4A), and 11.81% (Cat ≥ 3). Lung-RADS v1.0 (Pinsky 2015) is primary; v2022 is computed by `lungrads_v10_vs_v2022.py` as a sensitivity check. The per-category risk-of-malignancy thresholds that anchor the DCA p_t grid are unchanged across versions.
-- **Calibration form.** Per-horizon Platt scaling fit on the dev fold. We do not ship the isotonic-recalibration explorations.
 
-## Caveats
-
-1. *Sybil v1.0 decile collapse.* The author's calibrator emits only 228 unique values on the dev fold, so decile bins D6 and D10 collapse on test. This is a property of the released calibrator, not the analysis, and is noted in the supplementary material.
-2. *Year-6 complete-case.* NLST `time_at_event` caps at 5, so the year-6 evaluation falls to n = 4,339.
-3. *Pillar-0 calibration.* Authors did not release dev predictions, so the Pillar-0 calibrator is fit on our user-reproduced dev scores. The test reproduction matches author scores to ΔAUC < 0.003, ΔC-index = 0.0005, with per-scan correlation ≥ 0.986.
-4. *Race subgroup power.* Non-White strata are underpowered (N_cancer = 1, 2, 2 in Black-or-African-American, Asian, and Other respectively).
-
-## Citation
-
-Please cite the paper (preprint forthcoming), the LungEvaty model (citation withheld for blind review), and NLST per the NCI [data-use agreement](https://cdas.cancer.gov/nlst/).
